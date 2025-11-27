@@ -1,44 +1,42 @@
 # MemoryGame
-Ultra Basic Memory Game — Solidity Smart Contract
-Project Description
+# Ultra Basic Memory Game — Solidity Smart Contract
 
-This project implements a very simple Memory/Matching Game using Solidity.
-The goal is to provide beginners with an easy-to-understand example of how arrays, state, and basic game logic can be implemented inside a smart contract.
+## Project Description
+This project contains a simple Memory/Matching Game implemented in Solidity.  
+It demonstrates how to use arrays, state variables, and basic logic to build a very lightweight game on the blockchain.
 
-The contract allows you to set up a board of cards, flip two positions, check if they match, and track which cards have already been matched.
+The contract allows setting a card board, flipping two card indexes, checking if they match, and marking matched cards.
 
-What It Does
+---
 
-Allows setting a board of numbered cards (e.g., [1, 2, 1, 2])
+## What It Does
+- Lets you set a board of card values (example: `[1, 2, 1, 2]`)
+- Allows flipping two card positions
+- Checks whether the selected cards match
+- Marks matched cards so they cannot be used again
+- Returns `true` when there is a match, otherwise `false`
+- Provides the size of the board
 
-Lets users flip two card positions
+---
 
-Checks whether the flipped cards match
+## Features
+- Beginner-friendly Solidity code
+- Uses `uint8[]` to store card values
+- Uses `bool[]` to track matched cards
+- Includes basic validation for invalid flips
+- Good starting point for learning Web3, solidity logic, or simple DApps
 
-Marks matched cards so they cannot be reused
+---
 
-Returns true when a match is found and false when not
-
-Provides the current board size
-
-Features
-
-Simple, beginner-friendly codebase
-
-Uses uint8[] for storing card values
-
-Uses bool[] to track matched cards
-
-Validation checks to prevent invalid flips
-
-Useful as a learning project, demo DApp backend, or Web3 tutorial
-
-Deployed Smart Contract
-
-View the deployed contract here:
+## Deployed Smart Contract
+Flare Coston2 Explorer:  
 https://coston2-explorer.flare.network/address/0x5dD6d817206E495bfe5a9dF56888C967558A1635?tab=index
 
-Smart Contract Code
+---
+
+## Smart Contract Code
+
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -73,3 +71,4 @@ contract MemoryGame {
         return board.length;
     }
 }
+
