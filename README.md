@@ -1,74 +1,72 @@
-# MemoryGame
-# Ultra Basic Memory Game — Solidity Smart Contract
+# Memory Game – Smart Contract + Frontend Integration
 
-## Project Description
-This project contains a simple Memory/Matching Game implemented in Solidity.  
-It demonstrates how to use arrays, state variables, and basic logic to build a very lightweight game on the blockchain.
-
-The contract allows setting a card board, flipping two card indexes, checking if they match, and marking matched cards.
+## **Contract Address**
+**0xeE33eaeD97D3e4f89Ca60901e927b6a9c68d25c6**  
+https://coston2-explorer.flare.network/address/0xeE33eaeD97D3e4f89Ca60901e927b6a9c68d25c6
 
 ---
 
-## What It Does
-- Lets you set a board of card values (example: `[1, 2, 1, 2]`)
-- Allows flipping two card positions
-- Checks whether the selected cards match
-- Marks matched cards so they cannot be used again
-- Returns `true` when there is a match, otherwise `false`
-- Provides the size of the board
+## **Project Description**
+The Memory Game is a blockchain-based on-chain guessing game built on the Flare Network.  
+Players attempt to guess a fixed hidden sequence of three numbers. Each guess is sent as an on-chain transaction, and the contract validates whether the guess matches the secret sequence. The contract also enforces a maximum number of attempts ("glass limit") per player.
+
+This project provides:
+- A minimalistic smart contract
+- A fully functional React/Next.js frontend
+- Wallet integration via Wagmi + Viem
+- Real-time attempt tracking and status updates
+
+This lightweight structure allows easy expansion into a full gamified DApp with animations, rewards, or randomized sequences.
 
 ---
 
-## Features
-- Beginner-friendly Solidity code
-- Uses `uint8[]` to store card values
-- Uses `bool[]` to track matched cards
-- Includes basic validation for invalid flips
-- Good starting point for learning Web3, solidity logic, or simple DApps
+## **Features**
+### **Smart Contract**
+- ✔️ Hidden memory sequence stored on-chain  
+- ✔️ Player-specific attempt tracking  
+- ✔️ Hardcoded attempt limit (`maxAttempts`)  
+- ✔️ `GuessResult` event emitted for UI feedback  
+- ✔️ Stateless architecture with no constructor inputs  
+- ✔️ Lightweight & gas-efficient logic  
+
+### **Frontend**
+- ✔️ Built with Next.js + Wagmi  
+- ✔️ Wallet-based authentication  
+- ✔️ Read player’s remaining attempts  
+- ✔️ Submit a guess (3-number input)  
+- ✔️ Loading, pending, confirmation UI states  
+- ✔️ Realtime transaction status (hash + confirmation)  
+- ✔️ Full error handling  
 
 ---
 
-## Deployed Smart Contract
-Flare Coston2 Explorer:  
-https://coston2-explorer.flare.network/address/0x5dD6d817206E495bfe5a9dF56888C967558A1635?tab=index
+## **How It Solves the Problem**
+Traditional online memory or guessing games rely on centralized servers, making fairness and transparency questionable. This project solves that by:
+
+### **1. Ensuring Transparency**
+Every guess is recorded on-chain, guaranteeing:
+- Immutable game history  
+- Transparent rules  
+- Public verifiability of attempts  
+
+### **2. Enforcing Fairness**
+Attempt limits are enforced at the smart-contract level.  
+Players cannot bypass the "glass limit" by refreshing or spoofing requests.
+
+### **4. On-Chain Game Logic**
+Since the validation happens on-chain:
+- No off-chain manipulation  
+- No backend required  
+- Players trust the contract, not a server  
+
+### **5. Easy DApp Expansion**
+This contract provides a base for future enhancements:
+- Rewards/tokens for winners  
+- Randomized sequences  
+- Multiplayer competitions  
+- Leaderboards  
 
 ---
 
-## Smart Contract Code
-
-```solidity
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
-// ULTRA BASIC MEMORY GAME
-contract MemoryGame {
-    uint8[] public board;      // stores card numbers (example: [1,2,1,2])
-    bool[] public matched;     // matched or not
-
-    // Set the board (ex: [1,2,1,2])
-    function setBoard(uint8[] calldata _board) external {
-        board = _board;
-        matched = new bool[](_board.length);
-    }
-
-    // Check if two cards match
-    function flip(uint a, uint b) external returns (bool) {
-        if (a >= board.length || b >= board.length) return false;
-        if (a == b) return false;
-        if (matched[a] || matched[b]) return false;
-
-        if (board[a] == board[b]) {
-            matched[a] = true;
-            matched[b] = true;
-            return true;   // they match
-        }
-
-        return false;       // they don't match
-    }
-
-    // See board size
-    function boardSize() external view returns (uint) {
-        return board.length;
-    }
-}
-
+## **Summary**
+This project demonstrates a completely on-chain memory puzzle game with a clean frontend integration. With user-friendly interactions, wallet connectivity, and an extensible contract architecture, it serves as a strong starting point for building more advanced blockchain games on Flare or EVM-compatible networks.
