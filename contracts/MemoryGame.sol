@@ -1,34 +1,38 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-// ULTRA BASIC MEMORY GAME
 contract MemoryGame {
-    uint8[] public board;      // stores card numbers (example: [1,2,1,2])
-    bool[] public matched;     // matched or not
+    // The correct hidden sequence (you can change these numbers)
+    uint8[3] private secretSequence = [1, 3, 2];
 
-    // Set the board (ex: [1,2,1,2])
-    function setBoard(uint8[] calldata _board) external {
-        board = _board;
-        matched = new bool[](_board.length);
-    }
+    // Maximum allowed attempts (glass limit)
+    uint public maxAttempts = 5;
 
-    // Check if two cards match
-    function flip(uint a, uint b) external returns (bool) {
-        if (a >= board.length || b >= board.length) return false;
-        if (a == b) return false;
-        if (matched[a] || matched[b]) return false;
+    // Track attempts made by each player
+    mapping(address => uint) public attempts;
 
-        if (board[a] == board[b]) {
-            matched[a] = true;
-            matched[b] = true;
-            return true;   // they match
+    // Event to notify if user guessed correctly or wrong
+    event GuessResult(address player, bool correct, uint attemptsUsed);
+
+    // User submits their guess
+    function guess(uint8[3] memory userGuess) public {
+        require(attempts[msg.sender] < maxAttempts, "Guess limit reached!");
+
+        attempts[msg.sender]++;
+
+        bool correct = true;
+        for (uint i = 0; i < 3; i++) {
+            if (userGuess[i] != secretSequence[i]) {
+                correct = false;
+                break;
+            }
         }
 
-        return false;       // they don't match
+        emit GuessResult(msg.sender, correct, attempts[msg.sender]);
     }
 
-    // See board size
-    function boardSize() external view returns (uint) {
-        return board.length;
+    // Check attempts remaining for current player
+    function attemptsLeft(address player) public view returns (uint) {
+        return maxAttempts - attempts[player];
     }
 }
